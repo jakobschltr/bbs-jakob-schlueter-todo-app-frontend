@@ -6,7 +6,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@nuxtjs/color-mode',
-    '@nuxt/icon'
+    '@nuxt/icon',
+    '@nuxt/fonts',
+    '@pinia/nuxt',
+    '@pinia/colada-nuxt'
   ],
   css: ['~/assets/css/tailwind.css'],
   vite: {

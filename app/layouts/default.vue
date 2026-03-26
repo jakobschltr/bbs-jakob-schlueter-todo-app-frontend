@@ -11,7 +11,7 @@
       </button>
     </header>
     
-    <main class="flex-1 flex flex-col items-center bg-neutral-light">
+    <main class="flex-1 flex flex-col p-4 bg-neutral-light">
       <slot />
     </main>
   </div>
