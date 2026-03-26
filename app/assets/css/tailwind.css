@@ -1,12 +1,42 @@
 @import "tailwindcss";
 
-@theme {
-  --color-primary: #0099ff;
-  --color-sencondary: #475569;
-  --color-tertiary: #059669;
-  --color-neutral: #F8FAFC;
+@custom-variant dark (&:where(.dark, .dark *));
 
-  @variant dark {
-    --color-primary: #
-  }
+@theme {
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-neutral: var(--neutral);
+  --color-neutral-light: var(--neutral-light);
+  --color-primary-text: var(--primary-text);
+  --color-on-primary: var(--on-primary);
+  --color-on-secondary: var(--on-secondary);
+}
+
+:root {
+  --primary: #2563EB;
+  --secondary: #6275AF;
+  --on-primary: #FFFFFF;
+  --on-secondary: #FFFFFF;
+
+  --neutral: #F8FAFC;
+  --neutral-light: #F1F5F9;
+  --primary-text: #0F172A;
+}
+
+.dark {
+  --neutral: #1E293B;
+  --neutral-light: #334155;
+  --primary-text: #F8FAFC;
+}
+
+body {
+  @apply bg-neutral-light text-primary-text transition-colors duration-300;
+}
+
+.bg-primary {
+  color: var(--on-primary);
+}
+
+.bg-secondary {
+  color: var(--on-secondary);
 }
