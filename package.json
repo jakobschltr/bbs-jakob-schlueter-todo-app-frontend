@@ -5,11 +5,14 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxt/eslint": "1.15.2",
     "@nuxt/fonts": "0.14.0",
     "@pinia/colada-nuxt": "0.3.2",
     "@pinia/nuxt": "0.11.3",
@@ -21,6 +24,7 @@
   },
   "devDependencies": {
     "@nuxt/icon": "^2.2.1",
-    "@nuxtjs/color-mode": "^4.0.0"
+    "@nuxtjs/color-mode": "^4.0.0",
+    "typescript": "^6.0.2"
   }
 }
