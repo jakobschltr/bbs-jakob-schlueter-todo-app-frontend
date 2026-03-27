@@ -15,7 +15,10 @@ export default defineNuxtConfig({
   vite: {
     plugins: [
       tailwindcss(),
-    ]
+    ],
+    ssr: {
+      noExternal: ['vue'],
+    },
   },
   colorMode: {
     preference: 'system',
