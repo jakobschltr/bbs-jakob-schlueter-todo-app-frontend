@@ -10,6 +10,7 @@
   --color-primary-text: var(--primary-text);
   --color-on-primary: var(--on-primary);
   --color-on-secondary: var(--on-secondary);
+  --font-display: "Google Sans Code", "Open Sans", "sans-serif";
 }
 
 :root {
@@ -30,7 +31,7 @@
 }
 
 body {
-  @apply bg-neutral-light text-primary-text transition-colors duration-300;
+  @apply bg-neutral-light font-display text-primary-text transition-colors duration-300;
 }
 
 .bg-primary {

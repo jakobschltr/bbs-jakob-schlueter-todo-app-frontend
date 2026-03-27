@@ -1,9 +1,13 @@
 <template>
-  <div>
-    <h1 class="bg-primary">Aufgaben Liste</h1>
+  <div class="">
+    {{ todos }}
   </div>
 </template>
 
 <script lang="ts" setup>
+const listId = ref('list1');
 
+const { todos, isLoading } = useTodolist(listId);
+
+console.log(todos.value);
 </script>
