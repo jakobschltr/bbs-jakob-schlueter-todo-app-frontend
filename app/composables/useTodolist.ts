@@ -18,6 +18,7 @@ export const useTodolist = (listId: Ref<string> | string) => {
   
   const listQuery = useQuery({
     key: () => ['todos', unref(listId)],
+    enabled: import.meta.client,
     query: async () => {
       try {
         const data = await $fetch<entry[]>(`${baseUrl}/todo-list/${unref(listId)}`);
