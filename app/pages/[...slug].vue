@@ -1,11 +1,9 @@
 <template>
-
+    <span class="hidden" aria-hidden="true" />
 </template>
 
 <script lang="ts" setup>
 definePageMeta({
-  middleware: () => {
-    return navigateTo('/', { redirectCode: 301 });
-  }
-})
+    middleware: () => navigateTo('/', { redirectCode: 301 }),
+});
 </script>
