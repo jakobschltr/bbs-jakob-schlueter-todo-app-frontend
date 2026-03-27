@@ -1,4 +1,4 @@
-export type entry = {
+export type Entry = {
   id: string,
   name: string,
   description: string,
@@ -6,7 +6,7 @@ export type entry = {
   list_id: string
 }
 
-export type todolist = {
+export type Todolist = {
   id: string,
   name: string
 }
@@ -21,7 +21,7 @@ export const useTodolist = (listId: Ref<string> | string) => {
     enabled: import.meta.client,
     query: async () => {
       try {
-        const data = await $fetch<entry[]>(`${baseUrl}/todo-list/${unref(listId)}`);
+        const data = await $fetch<Entry[]>(`${baseUrl}/todo-list/${unref(listId)}`);
         return { data, exists: true as const };
       } catch (error: unknown) {
         const status =
@@ -29,7 +29,7 @@ export const useTodolist = (listId: Ref<string> | string) => {
             ? (error as { statusCode?: number }).statusCode
             : undefined;
         if (status === 404) {
-          return { data: [] as entry[], exists: false as const };
+          return { data: [] as Entry[], exists: false as const };
         }
         throw error;
       }
