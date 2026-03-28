@@ -10,6 +10,7 @@
   --color-primary-text: var(--primary-text);
   --color-on-primary: var(--on-primary);
   --color-on-secondary: var(--on-secondary);
+  --color-border: var(--border);
   --font-display: "Google Sans Code", "Open Sans", "sans-serif";
 }
 
@@ -22,12 +23,16 @@
   --neutral: #F8FAFC;
   --neutral-light: #F1F5F9;
   --primary-text: #0F172A;
+
+  --border: #E2E8F0;
 }
 
 .dark {
   --neutral: #1E293B;
   --neutral-light: #334155;
   --primary-text: #F8FAFC;
+
+  --border: #334155;
 }
 
 body {
@@ -40,4 +45,8 @@ body {
 
 .bg-secondary {
   color: var(--on-secondary);
+}
+
+button {
+  @apply cursor-pointer;
 }
