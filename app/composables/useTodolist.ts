@@ -1,11 +1,3 @@
-export type Entry = {
-  id: string,
-  name: string,
-  description: string,
-  user_id: string,
-  list_id: string
-}
-
 export type Todolist = {
   id: string,
   name: string
@@ -14,7 +6,7 @@ export type Todolist = {
 export const useTodolist = (listId: Ref<string> | string) => {
     const baseUrl = 'http://127.0.0.1:5000';
   
-    const listQuery = useQuery({
+    const listEntrys = useQuery({
         key: () => ['todos', unref(listId)],
         enabled: import.meta.client,
         query: async () => {
@@ -35,10 +27,10 @@ export const useTodolist = (listId: Ref<string> | string) => {
     });
 
     return {
-        todos: computed(() => listQuery.data.value?.data ?? []),
-        exists: computed(() => listQuery.data.value?.exists ?? true),
-        isLoading: listQuery.isLoading,
-        error: listQuery.error,
-        refresh: listQuery.refresh,
+        todos: computed(() => listEntrys.data.value?.data ?? []),
+        exists: computed(() => listEntrys.data.value?.exists ?? true),
+        isLoading: listEntrys.isLoading,
+        error: listEntrys.error,
+        refresh: listEntrys.refresh,
     };
 };

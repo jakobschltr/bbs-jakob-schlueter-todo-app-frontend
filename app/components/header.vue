@@ -8,16 +8,20 @@
             @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
         >
             <ClientOnly>
-                <Icon
-                    v-if="colorMode.value === 'light'"
-                    class="h-full w-full"
-                    name="material-symbols:light-mode-outline-rounded"
-                />
-                <Icon
-                    v-else
-                    class="h-full w-full"
-                    name="material-symbols:dark-mode-outline-rounded"
-                />
+                <span
+                    v-if="colorMode.value === 'light'"        
+                    class="block h-full w-full flex items-center justify-center [&_svg]:h-full [&_svg]:w-full}"
+                        aria-hidden="true"
+                        v-html="lightbulbFullIconSvg"
+
+                    />
+                    <span
+                        v-else        
+                        class="block h-full w-full flex items-center justify-center [&_svg]:h-full [&_svg]:w-full}"
+                        aria-hidden="true"
+                        v-html="lightbulbEmptyIconSvg"
+
+                    />
                 <template #fallback>
                     <span class="block h-full w-full" aria-hidden="true" />
                 </template>
@@ -27,5 +31,8 @@
 </template>
 
 <script lang="ts" setup>
+import lightbulbEmptyIconSvg from '~/assets/lightbulb-empty-icon.svg?raw';
+import lightbulbFullIconSvg from '~/assets/lightbulb-filled-icon.svg?raw';
+
 const colorMode = useColorMode();
 </script>
