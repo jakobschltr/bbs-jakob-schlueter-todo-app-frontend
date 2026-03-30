@@ -8,8 +8,7 @@
   --color-neutral: var(--neutral);
   --color-neutral-light: var(--neutral-light);
   --color-primary-text: var(--primary-text);
-  --color-on-primary: var(--on-primary);
-  --color-on-secondary: var(--on-secondary);
+  --color-on-button: var(--on-button);
   --color-border: var(--border);
   --font-display: "Google Sans Code", "Open Sans", "sans-serif";
 }
@@ -17,11 +16,10 @@
 :root {
   --primary: #2563EB;
   --secondary: #6275AF;
-  --on-primary: #FFFFFF;
-  --on-secondary: #FFFFFF;
+  --on-button: #FFFFFF;
 
-  --neutral: #F8FAFC;
-  --neutral-light: #F1F5F9;
+  --neutral: #e2f1f3;
+  --neutral-light: #F8FAFC;
   --primary-text: #0F172A;
 
   --border: #E2E8F0;
@@ -39,12 +37,10 @@ body {
   @apply bg-neutral-light font-display text-primary-text transition-colors duration-300;
 }
 
-.bg-primary {
-  color: var(--on-primary);
-}
-
-.bg-secondary {
-  color: var(--on-secondary);
+.bg-primary, 
+.bg-secondary,
+.button-class {
+  @apply text-on-button;
 }
 
 button {

@@ -23,7 +23,6 @@
     "vue-router": "^5.0.4"
   },
   "devDependencies": {
-    "@nuxt/icon": "^2.2.1",
     "@nuxtjs/color-mode": "^4.0.0",
     "typescript": "^6.0.2"
   }
