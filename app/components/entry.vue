@@ -7,22 +7,22 @@
             </div>
             <div class="flex gap-2">
                 <button
-                    class="w-8 h-8 p-1 bg-primary rounded-lg button-class"
+                    class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center button-class"
                     type="button"
-                    @click="editEntry.mutate({ entryId: entry.id, listId: entry.list_id, name: 'Test1', description: 'Test2' })"
+                    @click="editEntry({ entryId: entry.id, name: 'Test1', description: 'Test2' })"
                 >
                     <span
-                        class="block h-full w-full flex items-center justify-center [&_svg]:h-[1.25rem] [&_svg]:w-[1.25rem]}"
+                        class="block h-3/5 w-3/5 flex items-center justify-center [&_svg]:h-full [&_svg]:w-full"
                         aria-hidden="true"
                         v-html="editIconSvg"
                     />
                 </button>
                 <button
-                    class="w-8 h-8 p-1 bg-red-500 rounded-lg button-class"
-                    @click="deleteEntry.mutate({ entryId: entry.id, listId: entry.list_id })"
+                    class="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center button-class"
+                    @click="deleteEntry({ entryId: entry.id })"
                 >
                     <span
-                        class="block h-full w-full flex items-center justify-center [&_svg]:h-[1rem] [&_svg]:w-[1rem]}"
+                        class="block h-1/2 w-1/2 flex items-center justify-center [&_svg]:h-full [&_svg]:w-full"
                         aria-hidden="true"
                         v-html="trashcanIconSvg"
                     />
@@ -37,9 +37,9 @@
 import editIconSvg from '~/assets/edit-icon.svg?raw';
 import trashcanIconSvg from '~/assets/trashcan-icon.svg?raw';
 
-const { deleteEntry, editEntry } = useEntry();
-
 defineProps<{
-  entry: Entry
+  entry: Entry,
 }>();
+
+const { deleteEntry, editEntry } = useTodolistEntrysFromRoute();
 </script>

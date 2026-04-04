@@ -6,42 +6,99 @@ export type Entry = {
   list_id: string
 }
 
-export const useEntry = () => {
+type ListIdSource = Ref<string | undefined> | string | undefined;
+
+const normalizeListId = (id: ListIdSource) =>
+    computed(() => {
+        if (id === undefined) {
+            return undefined;
+        }
+        const v = unref(id);
+        return v === '' ? undefined : v;
+    });
+
+export const useTodoEntries = (listId?: ListIdSource) => {
     const baseUrl = 'http://127.0.0.1:5000';
+    const activeListId = normalizeListId(listId);
     const queryCache = useQueryCache();
   
-    const deleteEntry = useMutation({
-        mutation: async ({ entryId, listId }: { entryId: string, listId: string }) => {
-            await $fetch(`${baseUrl}/entry/${entryId}`, { method: 'DELETE' });
-            return { listId };
-        },
-        onSettled: (_data, _error, variables) => {
-            if (variables?.listId) {
-                queryCache.invalidateQueries({ key: ['todos', variables.listId] });
+    const entriesQuery = useQuery({
+        key: () => ['todos', activeListId.value ?? ''],
+        enabled: computed(() => import.meta.client && activeListId.value !== undefined),
+        query: async () => {
+            const id = activeListId.value;
+            if (id === undefined) {
+                return { data: [] as Entry[], exists: true as const };
+            }
+            try {
+                const data = await $fetch<Entry[]>(`${baseUrl}/todo-list/${id}`);
+                return { data, exists: true as const };
+            } catch (error: unknown) {
+                const status =
+          error && typeof error === 'object' && 'statusCode' in error
+              ? (error as { statusCode?: number }).statusCode
+              : undefined;
+                if (status === 404) {
+                    return { data: [] as Entry[], exists: false as const };
+                }
+                throw error;
             }
         },
     });
 
-    const editEntry = useMutation({
-        mutation: async ({ entryId, listId, name, description }: { entryId: string, listId: string, name: string, description: string }) => {
-            await $fetch(`${baseUrl}/entry/${entryId}`, {
-                    method: 'PATCH',
-                    body: {
-                        name,
-                        description
-                    }
-                }
-            )
+    const createEntryMutation = useMutation({
+        mutation: async ({ name, description }: { name: string, description: string }) => {
+            await $fetch(`${baseUrl}/todo-list/${activeListId.value}`, {
+                method: 'POST',
+                body: {
+                    name,
+                    description,
+                },
+            });
         },
-        onSettled: (_data, _error, variables) => {
-            if (variables?.listId) {
-                queryCache.invalidateQueries({key: ['todos', variables.listId] });
-            }
-        }
+        onSettled: () => {
+            if(activeListId.value) queryCache.invalidateQueries({ key: ['todos', activeListId.value] });
+        },
+    });
+
+    const deleteEntryMutation = useMutation({
+        mutation: async ({ entryId }: { entryId: string }) => {
+            await $fetch(`${baseUrl}/entry/${entryId}`, { method: 'DELETE' });
+        },
+        onSettled: () => {
+            if(activeListId.value) queryCache.invalidateQueries({ key: ['todos', activeListId.value] });
+        },
+    });
+
+    const editEntryMutation = useMutation({
+        mutation: async ({ entryId, name, description }: { entryId: string, name: string, description: string }) => {
+            await $fetch(`${baseUrl}/entry/${entryId}`, {
+                method: 'PATCH',
+                body: {
+                    name,
+                    description,
+                },
+            });
+        },
+        onSettled: () => {
+            if(activeListId.value) queryCache.invalidateQueries({ key: ['todos', activeListId.value] });
+        },
     });
 
     return {
-        deleteEntry,
-        editEntry
+        entries: computed(() => entriesQuery.data.value?.data ?? []),
+        exists: computed(() => entriesQuery.data.value?.exists ?? true),
+        createEntry: createEntryMutation.mutate,
+        deleteEntry: deleteEntryMutation.mutate,
+        editEntry: editEntryMutation.mutate,
     };
+};
+
+export const useTodolistEntrysFromRoute = () => {
+    const route = useRoute();
+    const listId = computed(() => {
+        const p = route.params.id;
+        return (Array.isArray(p) ? p[0] : p) as string | undefined;
+    });
+    return useTodoEntries(listId);
 };

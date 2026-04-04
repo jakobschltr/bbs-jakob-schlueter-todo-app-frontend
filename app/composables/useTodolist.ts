@@ -3,34 +3,42 @@ export type Todolist = {
   name: string
 }
 
-export const useTodolist = (listId: Ref<string> | string) => {
+export const useTodoLists = () => {
     const baseUrl = 'http://127.0.0.1:5000';
-  
-    const listEntrys = useQuery({
-        key: () => ['todos', unref(listId)],
+    const queryCache = useQueryCache();
+
+    const todoListsQuery = useQuery({
+        key: () => ['todolists'],
         enabled: import.meta.client,
-        query: async () => {
-            try {
-                const data = await $fetch<Entry[]>(`${baseUrl}/todo-list/${unref(listId)}`);
-                return { data, exists: true as const };
-            } catch (error: unknown) {
-                const status =
-          error && typeof error === 'object' && 'statusCode' in error
-              ? (error as { statusCode?: number }).statusCode
-              : undefined;
-                if (status === 404) {
-                    return { data: [] as Entry[], exists: false as const };
-                }
-                throw error;
-            }
+        query: async () => $fetch<Todolist[]>(`${baseUrl}/todo-list`),
+    });
+
+    const createTodoListMutation = useMutation({
+        mutation: async ({ name }: { name: string }) => {
+            await $fetch(`${baseUrl}/todo-list`, {
+                method: 'POST',
+                body: {
+                    'id': Math.floor(Math.random()*10000000),
+                    name,
+                },
+            });
+        },
+        onSettled: () => {
+            console.log('triggering refesh');
+            queryCache.invalidateQueries({ key: ['todolists'] });
         },
     });
 
+    const deleteTodolistMutation = useMutation({
+        mutation: async ({ listId }: { listId: string }) => {
+            await $fetch(`${baseUrl}/todo-list/${listId}`, { method: 'DELETE' });
+        },
+        onSettled: () => queryCache.invalidateQueries({ key: ['todolists'] }),
+    });
+
     return {
-        todos: computed(() => listEntrys.data.value?.data ?? []),
-        exists: computed(() => listEntrys.data.value?.exists ?? true),
-        isLoading: listEntrys.isLoading,
-        error: listEntrys.error,
-        refresh: listEntrys.refresh,
+        todoLists: computed(() => todoListsQuery.data.value ?? []),
+        createTodoList: createTodoListMutation.mutate,
+        deleteTodoList: deleteTodolistMutation.mutate,
     };
 };

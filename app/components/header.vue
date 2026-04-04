@@ -11,17 +11,15 @@
                 <span
                     v-if="colorMode.value === 'light'"        
                     class="block h-full w-full flex items-center justify-center [&_svg]:h-full [&_svg]:w-full}"
-                        aria-hidden="true"
-                        v-html="lightbulbFullIconSvg"
-
-                    />
-                    <span
-                        v-else        
-                        class="block h-full w-full flex items-center justify-center [&_svg]:h-full [&_svg]:w-full}"
-                        aria-hidden="true"
-                        v-html="lightbulbEmptyIconSvg"
-
-                    />
+                    aria-hidden="true"
+                    v-html="lightbulbFullIconSvg"
+                />
+                <span
+                    v-else        
+                    class="block h-full w-full flex items-center justify-center [&_svg]:h-full [&_svg]:w-full}"
+                    aria-hidden="true"
+                    v-html="lightbulbEmptyIconSvg"
+                />
                 <template #fallback>
                     <span class="block h-full w-full" aria-hidden="true" />
                 </template>

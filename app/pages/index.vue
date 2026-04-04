@@ -1,13 +1,9 @@
 <template>
     <div class="">
-        {{ todos }}
+        test
     </div>
 </template>
 
 <script lang="ts" setup>
-const listId = ref('list1');
 
-const { todos } = useTodolist(listId);
-
-console.log(todos.value);
 </script>
