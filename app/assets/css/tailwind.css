@@ -3,46 +3,83 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
+  --text-2xs: 0.6875rem;
   --color-primary: var(--primary);
+  --color-primary-container: var(--primary-container);
   --color-secondary: var(--secondary);
-  --color-neutral: var(--neutral);
-  --color-neutral-light: var(--neutral-light);
-  --color-primary-text: var(--primary-text);
+  
+  --color-background: var(--background);
+  --color-surface-low: var(--surface-container-low);
+  --color-surface-lowest: var(--surface-container-lowest);
+  
+  --color-primary-text: var(--on-surface);
+  --color-text-variant: var(--on-surface-variant);
   --color-on-button: var(--on-button);
-  --color-border: var(--border);
-  --font-display: "Google Sans Code", "Open Sans", "sans-serif";
+  
+  --color-border: var(--outline-variant);
+
+  --font-display: "Manrope", "sans-serif";
+  --font-body: "Inter", "sans-serif";
+
+  --shadow-sunken: var(--shadow-sunken);
 }
 
 :root {
-  --primary: #2563EB;
+  --primary: #006a6a;
+  --primary-container: #8dedec;
   --secondary: #6275AF;
-  --on-button: #FFFFFF;
+  
+  --background: #faf9fe;
+  --surface-container-low: #f3f3fa;
+  --surface-container-lowest: #ffffff;
+  
+  --on-surface: #2f323a;
+  --on-surface-variant: rgba(47, 50, 58, 0.6);
+  --on-button: #ffffff;
+  
+  --outline-variant: rgba(47, 50, 58, 0.15);
 
-  --neutral: #e2f1f3;
-  --neutral-light: #F8FAFC;
-  --primary-text: #0F172A;
-
-  --border: #E2E8F0;
+  --shadow-sunken: 0px 20px 40px rgba(47, 50, 58, 0.06);
 }
 
 .dark {
-  --neutral: #1E293B;
-  --neutral-light: #334155;
-  --primary-text: #F8FAFC;
-
-  --border: #334155;
+  --background: #191c1c;
+  --surface-container-low: #1e2121;
+  --surface-container-lowest: #2b2f2f;
+  --on-surface: #e1e3e3;
+  --on-surface-variant: rgba(225, 227, 227, 0.6);
+  --outline-variant: rgba(225, 227, 227, 0.15);
 }
 
 body {
-  @apply bg-neutral-light font-display text-primary-text transition-colors duration-300;
+  @apply bg-background font-body text-primary-text transition-colors duration-300;
 }
 
-.bg-primary, 
-.bg-secondary,
-.button-class {
+h1, h2, .display-text {
+  @apply font-display font-semibold tracking-tight;
+}
+
+.glass-panel {
+  @apply bg-white/80 backdrop-blur-[24px];
+}
+
+.btn-primary {
+  @apply bg-primary text-on-button text-shadow-2xs shadow-sunken rounded-xl px-6 py-3 transition-all duration-200;
+}
+
+.btn-primary:hover {
+  @apply bg-primary-container text-primary-text cursor-pointer;
+}
+
+.btn-primary:active {
   @apply text-on-button;
 }
 
-button {
-  @apply cursor-pointer;
+.btn-primary-gradient {
+  background: linear-gradient(135deg, var(--primary), var(--primary-container));
+  @apply text-on-button rounded-xl px-6 py-3 transition-all duration-300;
 }
+
+/*.shadow-sunken {
+  box-shadow: 0px 20px 40px rgba(47, 50, 58, 0.06);
+} */

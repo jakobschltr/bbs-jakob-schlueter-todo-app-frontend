@@ -1,5 +1,5 @@
 <template>
-    <header class="bg-neutral flex justify-between p-4 items-center shadow-xs shadow-border sticky top-0 z-10">
+    <header class="bg-background flex justify-between p-4 items-center shadow-2xs shadow-gray-950/5 sticky top-0 z-10">
         <h1 class="text-2xl">"Mach ich morgen"</h1>
         <button
             type="button"
