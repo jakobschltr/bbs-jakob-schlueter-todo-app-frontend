@@ -1,22 +1,22 @@
 <template>
-    <header class="bg-background flex justify-between p-4 items-center shadow-2xs shadow-gray-950/5 sticky top-0 z-10">
+    <header class="bg-background flex justify-between p-4 items-center shadow-2xs shadow-gray-950/5 sticky top-0">
         <h1 class="text-2xl">"Mach ich morgen"</h1>
         <button
             type="button"
             aria-label="Farbschema umschalten"
-            class="h-6 w-6"
+            class="w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container "
             @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
         >
             <ClientOnly>
                 <span
                     v-if="colorMode.value === 'light'"        
-                    class="block h-full w-full flex items-center justify-center [&_svg]:h-full [&_svg]:w-full}"
+                    class="block h-full w-full flex items-center justify-center [&_svg]:h-5 [&_svg]:w-5}"
                     aria-hidden="true"
                     v-html="lightbulbFullIconSvg"
                 />
                 <span
                     v-else        
-                    class="block h-full w-full flex items-center justify-center [&_svg]:h-full [&_svg]:w-full}"
+                    class="block h-full w-full flex items-center justify-center [&_svg]:h-5 [&_svg]:w-5"
                     aria-hidden="true"
                     v-html="lightbulbEmptyIconSvg"
                 />

@@ -1,15 +1,15 @@
 <template>
     <div class="bg-primary rounded-l-lg rounded-r-xl shadow-xl">
-        <div class="bg-neutral rounded-lg pl-4 py-2 pr-2 ml-1 text-primary-text flex">
-            <div class="flex-1">
-                <h3 class="font-bold mb-2">{{ entry.name }}</h3>
-                <p class="text-sm">{{ entry.description }}</p>
+        <div class="group bg-surface-lowest rounded-lg pl-4 py-2 pr-2 ml-1 text-primary-text flex">
+            <div class="flex-1 flex flex-col justify-center gap-1 min-h-8">
+                <h3 class="font-bold">{{ entry.name }}</h3>
+                <p v-if="entry.description" class="text-sm">{{ entry.description }}</p>
             </div>
-            <div class="flex gap-2">
+            <div class="flex gap-1">
                 <button
-                    class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center button-class"
+                    class="w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container hidden group-hover:flex items-center justify-center"
                     type="button"
-                    @click="editEntry({ entryId: entry.id, name: 'Test1', description: 'Test2' })"
+                    @click="openModal('updateEntry', { entryId: entry.id, name: entry.name, description: entry.description })"
                 >
                     <span
                         class="block h-3/5 w-3/5 flex items-center justify-center [&_svg]:h-full [&_svg]:w-full"
@@ -18,7 +18,7 @@
                     />
                 </button>
                 <button
-                    class="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center button-class"
+                    class="w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container hidden group-hover:flex items-center justify-center"
                     @click="deleteEntry({ entryId: entry.id })"
                 >
                     <span
@@ -41,5 +41,6 @@ defineProps<{
   entry: Entry,
 }>();
 
-const { deleteEntry, editEntry } = useTodolistEntrysFromRoute();
+const { openModal } = useModalStore();
+const { deleteEntry } = useTodolistEntrysFromRoute();
 </script>

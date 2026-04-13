@@ -22,7 +22,7 @@
                     class="hidden group-hover:flex h-full aspect-square w-auto items-center justify-center"
                 >
                     <button
-                        class="flex h-8 w-8 hover:shadow-sunken rounded-lg hover:bg-primary-container items-center justify-center"
+                        class="flex h-8 w-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container items-center justify-center"
                         @click="deleteTodoList({ listId: list.id })"
                     >
                         <span
@@ -38,7 +38,7 @@
         <div class="pt-4 flex-none pr-2">
             <button
                 class="btn-primary w-full"
-                @click="createTodoList({ name: 'dadsadahsjdghjasgdhgashjkdgsadgashkjdgakjhdgajsgkda' })"
+                @click="openModal('creatList')"
             >
                 Add New List
             </button>
@@ -49,5 +49,6 @@
 <script lang="ts" setup>
 import trashcanIconSvg from '~/assets/trashcan-icon.svg?raw';
 
-const { todoLists, deleteTodoList, createTodoList } = useTodoLists();
+const { openModal } = useModalStore();
+const { todoLists, deleteTodoList } = useTodoLists();
 </script>

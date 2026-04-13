@@ -18,6 +18,8 @@
   
   --color-border: var(--outline-variant);
 
+  --color-overlay: var(--modal-overlay);
+
   --font-display: "Manrope", "sans-serif";
   --font-body: "Inter", "sans-serif";
 
@@ -39,6 +41,8 @@
   
   --outline-variant: rgba(47, 50, 58, 0.15);
 
+  --modal-overlay: rgba(76, 80, 93, 0.2);
+
   --shadow-sunken: 0px 20px 40px rgba(47, 50, 58, 0.06);
 }
 
@@ -49,6 +53,7 @@
   --on-surface: #e1e3e3;
   --on-surface-variant: rgba(225, 227, 227, 0.6);
   --outline-variant: rgba(225, 227, 227, 0.15);
+  --modal-overlay: rgba(0, 0, 0, 0.6);
 }
 
 body {
@@ -56,7 +61,7 @@ body {
 }
 
 h1, h2, .display-text {
-  @apply font-display font-semibold tracking-tight;
+  @apply font-display font-bold tracking-tight;
 }
 
 .glass-panel {
@@ -68,7 +73,7 @@ h1, h2, .display-text {
 }
 
 .btn-primary:hover {
-  @apply bg-primary-container text-primary-text cursor-pointer;
+  @apply bg-primary-container text-primary cursor-pointer;
 }
 
 .btn-primary:active {
@@ -80,6 +85,14 @@ h1, h2, .display-text {
   @apply text-on-button rounded-xl px-6 py-3 transition-all duration-300;
 }
 
-/*.shadow-sunken {
-  box-shadow: 0px 20px 40px rgba(47, 50, 58, 0.06);
-} */
+.btn-secondary {
+  @apply bg-secondary text-on-button text-shadow-2xs shadow-sunken rounded-xl px-6 py-3 transition-all duration-200;
+}
+
+.btn-secondary:hover {
+  @apply bg-primary-container text-secondary cursor-pointer;
+}
+
+.btn-secondary:active {
+  @apply text-on-button;
+}
