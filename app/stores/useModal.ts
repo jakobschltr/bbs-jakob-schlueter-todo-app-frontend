@@ -14,7 +14,6 @@ export const useModalStore = defineStore('modalStore', () => {
         inputFields.value = inputForm;
         isOpen.value = true;
         modalProps.value = props ?? undefined;
-        console.log(isOpen.value);
     };
 
     const closeModal = () => {

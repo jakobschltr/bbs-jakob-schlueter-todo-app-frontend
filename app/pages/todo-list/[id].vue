@@ -16,7 +16,7 @@
                     type="text"
                     :placeholder="`Eintrag zu '${listName ?? ''}' hinzufügen`"
                 >
-                <button class="absolute right-2 self-center w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container" @click="openModal('createEntry', { name: newEntryName })">
+                <button class="absolute right-2 self-center w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container" @click="handleEntryCreation">
                     <span class="block h-full w-full flex items-center justify-center [&_svg]:h-5 [&_svg]:w-5" aria-hidden="true" v-html="plusIconSvg" />
                 </button>
             </div>
@@ -47,6 +47,11 @@ const listName = computed(
 );
 
 const newEntryName = ref('');
+
+const handleEntryCreation = () => {
+    openModal('createEntry', { name: newEntryName.value });
+    newEntryName.value = '';
+};
 
 watch(
     exists,
