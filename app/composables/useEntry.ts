@@ -18,7 +18,7 @@ const normalizeListId = (id: ListIdSource) =>
     });
 
 export const useTodoEntries = (listId?: ListIdSource) => {
-    const baseUrl = 'http://127.0.0.1:5000';
+    const baseUrl = 'http://0.0.0.0:5000';
     const activeListId = normalizeListId(listId);
     const queryCache = useQueryCache();
   
