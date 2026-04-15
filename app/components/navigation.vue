@@ -1,34 +1,32 @@
 <template>
-    <div class="bg-neutral w-75 p-2 flex flex-col gap-1">
-        <div class="text-lg pl-2">
-            <div class="flex justify-between pl-0 p-2">
-                <h4>Übersicht</h4>
-                <button
-                    class="bg-primary w-6 h-6 flex items-center justify-center rounded-md"
-                    @click="createTodoList({ name: 'shopping' })"
-                >
-                    +
-                </button>
-            </div>
-            <div class="pl-1 border-l-2 border-border">
-                <div 
-                    v-for="list in todoLists"
-                    :key="list.id"
-                    class="group w-full h-fit p-2 hover:bg-neutral-light rounded-lg flex items-center relative"
-                >
-                    <NuxtLink
-                        :to="`/todo-list/${list.id}`" 
-                        class="flex-1 pr-10 text-sm"
-                    >
-                        {{ list.name }}
-                    </NuxtLink>
+    <div class="bg-surface-low w-65 p-4 pr-2 h-screen flex-none flex flex-col min-h-0">
+        
+        <div class="mb-4 flex-none pr-2 flex flex-col">
+            <h2 class="text-xl">Sammlung</h2>
+            <span class="text-2xs">Deine Listen</span>
+        </div>
 
+        <div class="flex-1 overflow-y-auto pr-2 scrollbar-thin"> 
+            <div 
+                v-for="list in todoLists"
+                :key="list.id"
+                class="group w-full h-10 hover:bg-background hover:shadow-sunken rounded-lg flex items-center relative mb-1"
+            >
+                <NuxtLink
+                    :to="`/todo-list/${list.id}`" 
+                    class="w-full text-md p-2 truncate"
+                >
+                    {{ list.name }}
+                </NuxtLink>
+                <div
+                    class="hidden group-hover:flex h-full aspect-square w-auto items-center justify-center"
+                >
                     <button
-                        class="hidden group-hover:flex absolute right-0 inset-y-0 aspect-square items-center justify-center rounded-lg hover:bg-red-500 transition-all"
+                        class="flex h-8 w-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container items-center justify-center"
                         @click="deleteTodoList({ listId: list.id })"
                     >
-                        <span 
-                            class="block h-1/2 w-1/2 flex items-center justify-center [&_svg]:h-full [&_svg]:w-full"
+                        <span
+                            class="block h-full w-full flex items-center justify-center [&_svg]:h-4 [&_svg]:w-4"
                             aria-hidden="true"
                             v-html="trashcanIconSvg"
                         />
@@ -36,11 +34,21 @@
                 </div>
             </div>
         </div>
+
+        <div class="pt-4 flex-none pr-2">
+            <button
+                class="btn-primary w-full"
+                @click="openModal('creatList')"
+            >
+                Add New List
+            </button>
+        </div>
     </div>
 </template>
 
 <script lang="ts" setup>
 import trashcanIconSvg from '~/assets/trashcan-icon.svg?raw';
 
-const { todoLists, deleteTodoList, createTodoList } = useTodoLists();
+const { openModal } = useModalStore();
+const { todoLists, deleteTodoList } = useTodoLists();
 </script>
