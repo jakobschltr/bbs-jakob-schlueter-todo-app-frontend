@@ -94,11 +94,4 @@ export const useTodoEntries = (listId?: ListIdSource) => {
     };
 };
 
-export const useTodolistEntrysFromRoute = () => {
-    const route = useRoute();
-    const listId = computed(() => {
-        const p = route.params.id;
-        return (Array.isArray(p) ? p[0] : p) as string | undefined;
-    });
-    return useTodoEntries(listId);
-};
+export const useTodolistEntrysFromRoute = () => useTodoEntries(getListIdFromtRoute());

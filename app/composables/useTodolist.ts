@@ -6,6 +6,7 @@ export type Todolist = {
 export const useTodoLists = () => {
     const baseUrl = 'http://0.0.0.0:5000';
     const queryCache = useQueryCache();
+    const route = useRoute();
 
     const todoListsQuery = useQuery({
         key: () => ['todolists'],
@@ -14,17 +15,17 @@ export const useTodoLists = () => {
     });
 
     const createTodoListMutation = useMutation({
-        mutation: async ({ name }: { name: string }) => {
-            await $fetch(`${baseUrl}/todo-list`, {
-                method: 'POST',
-                body: {
-                    'id': Math.floor(Math.random()*10000000),
-                    name,
-                },
-            });
+        mutation: async ({ name }: { name: string }) => await $fetch<Todolist>(`${baseUrl}/todo-list`, {
+            method: 'POST',
+            body: {
+                'id': Math.floor(Math.random()*10000000),
+                name,
+            },
+        }),
+        onSuccess: (created) => {
+            navigateTo(`/todo-list/${created.id}`);
         },
         onSettled: () => {
-            console.log('triggering refesh');
             queryCache.invalidateQueries({ key: ['todolists'] });
         },
     });
@@ -32,6 +33,13 @@ export const useTodoLists = () => {
     const deleteTodolistMutation = useMutation({
         mutation: async ({ listId }: { listId: string }) => {
             await $fetch(`${baseUrl}/todo-list/${listId}`, { method: 'DELETE' });
+        },
+        onSuccess: (_data, { listId }) => {
+            const param = route.params.id;
+            const currentId = Array.isArray(param) ? param[0] : param;
+            if (currentId !== undefined && String(currentId) === String(listId)) {
+                navigateTo('/', { replace: true });
+            }
         },
         onSettled: () => queryCache.invalidateQueries({ key: ['todolists'] }),
     });
