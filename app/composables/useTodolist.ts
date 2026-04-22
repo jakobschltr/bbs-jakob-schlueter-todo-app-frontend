@@ -18,7 +18,6 @@ export const useTodoLists = () => {
         mutation: async ({ name }: { name: string }) => await $fetch<Todolist>(`${baseUrl}/todo-list`, {
             method: 'POST',
             body: {
-                'id': Math.floor(Math.random()*10000000),
                 name,
             },
         }),
