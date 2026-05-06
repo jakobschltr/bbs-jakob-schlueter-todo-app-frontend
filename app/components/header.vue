@@ -1,6 +1,13 @@
 <template>
     <header class="bg-background flex justify-between p-4 items-center shadow-2xs shadow-gray-950/5 sticky top-0">
-        <h1 class="text-2xl">"Mach ich morgen"</h1>
+        <h1 class="text-2xl">
+            <NuxtLink
+                to="/"
+                class="rounded-lg px-1 -mx-1 outline-none transition-colors hover:bg-primary-container hover:text-black focus-visible:ring-2 focus-visible:ring-primary"
+            >
+                "Mach ich morgen"
+            </NuxtLink>
+        </h1>
         <button
             type="button"
             aria-label="Farbschema umschalten"
