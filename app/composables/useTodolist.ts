@@ -4,18 +4,28 @@ export type Todolist = {
 }
 
 export const useTodoLists = () => {
-    const baseUrl = 'http://127.0.0.1:5000';
+    const { fetchFromApi } = useApiFetch();
+    const { apiUrl } = useApiUrl();
+    const { setApiConnectionError, clearApiConnectionError } = useApiError();
     const queryCache = useQueryCache();
     const route = useRoute();
 
     const todoListsQuery = useQuery({
-        key: () => ['todolists'],
+        key: () => ['todolists', apiUrl.value],
         enabled: import.meta.client,
-        query: async () => $fetch<Todolist[]>(`${baseUrl}/todo-list`),
+        query: async () => fetchFromApi<Todolist[]>('/todo-list'),
     });
 
+    watch(() => todoListsQuery.error.value, (error) => {
+        if (error) {
+            setApiConnectionError(error);
+        } else if (todoListsQuery.status.value === 'success') {
+            clearApiConnectionError();
+        }
+    }, { immediate: true });
+
     const createTodoListMutation = useMutation({
-        mutation: async ({ name }: { name: string }) => await $fetch<Todolist>(`${baseUrl}/todo-list`, {
+        mutation: async ({ name }: { name: string }) => await fetchFromApi<Todolist>('/todo-list', {
             method: 'POST',
             body: {
                 name,
@@ -31,7 +41,7 @@ export const useTodoLists = () => {
 
     const deleteTodolistMutation = useMutation({
         mutation: async ({ listId }: { listId: string }) => {
-            await $fetch(`${baseUrl}/todo-list/${listId}`, { method: 'DELETE' });
+            await fetchFromApi(`/todo-list/${listId}`, { method: 'DELETE' });
         },
         onSuccess: (_data, { listId }) => {
             const param = route.params.id;
