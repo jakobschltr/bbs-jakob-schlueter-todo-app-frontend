@@ -1,17 +1,11 @@
 <template>
     <div class="flex justify-center">
-        <div class="w-full max-w-2xl">
-            <div class="mb-4">
-                <span class="text-text-variant text-sm">
-                    Einstellungen
-                </span>
-            </div>
-
+        <div class="w-full">
             <h2 class="text-lg font-bold mb-2">
-                API-Verbindung
+                Willkommen
             </h2>
-            <p class="text-text-variant text-sm mb-4">
-                Passe die Basis-URL an, wenn dein Backend unter einer anderen Adresse erreichbar ist.
+            <p class="text-text-variant text-sm mb-8">
+                Bevor du startest, gib die Adresse deiner API ein.
             </p>
 
             <div
@@ -35,51 +29,43 @@
 
             <form
                 class="flex flex-col gap-6"
-                @submit.prevent="handleSave"
+                @submit.prevent="handleSubmit"
             >
                 <div class="flex flex-col gap-2">
-                    <label for="api-url" class="text-xs text-text-variant uppercase">
+                    <label for="setup-api-url" class="text-xs text-text-variant uppercase">
                         API-URL
                     </label>
                     <input
-                        id="api-url"
+                        id="setup-api-url"
                         v-model="urlInput"
                         type="url"
                         required
-                        name="api-url"
+                        name="setup-api-url"
                         autocomplete="off"
                         placeholder="http://localhost:5000"
                         class="w-full bg-surface-low p-4 rounded-lg shadow-sunken"
                     >
                     <p class="text-2xs text-text-variant">
-                        Standard: {{ defaultApiUrl }}
+                        Beispiel: {{ defaultApiUrl }}
                     </p>
                 </div>
 
                 <div class="flex flex-wrap gap-3">
                     <button
                         type="submit"
-                        class="btn-primary"
+                        class="btn-primary w-full sm:w-auto"
                         :disabled="isSaving"
                     >
-                        Speichern
+                        Verbinden
                     </button>
                     <button
                         v-if="needsLocalNetworkAccess"
                         type="button"
-                        class="btn-secondary"
+                        class="btn-secondary w-full sm:w-auto"
                         :disabled="isSaving || isRequestingPermission"
                         @click="handleRequestNetworkAccess"
                     >
                         Browser-Berechtigung anfordern
-                    </button>
-                    <button
-                        type="button"
-                        class="btn-secondary"
-                        :disabled="isSaving"
-                        @click="handleReset"
-                    >
-                        Zurücksetzen
                     </button>
                 </div>
 
@@ -100,14 +86,6 @@
                 </div>
 
                 <div
-                    v-else-if="successMessage"
-                    class="rounded-lg border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-700 dark:text-green-300"
-                    role="status"
-                >
-                    {{ successMessage }}
-                </div>
-
-                <div
                     v-else-if="apiConnectionError"
                     class="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-300"
                     role="alert"
@@ -120,16 +98,18 @@
 </template>
 
 <script lang="ts" setup>
+definePageMeta({
+    layout: 'setup',
+});
+
 const { apiUrl, setApiUrl, defaultApiUrl, refreshApiQueries } = useApiUrl();
 const { apiConnectionError, clearApiConnectionError } = useApiError();
 
-const urlInput = ref(apiUrl.value);
-const successMessage = ref('');
+const urlInput = ref(defaultApiUrl);
 const isSaving = ref(false);
 const isVerifying = ref(false);
 const isRequestingPermission = ref(false);
 const permissionHint = ref('');
-const redirectTimerId = ref<ReturnType<typeof setTimeout>>();
 
 const normalizedUrlInput = computed(
     () => urlInput.value.trim().replace(/\/+$/, '') || defaultApiUrl,
@@ -147,7 +127,7 @@ const handleRequestNetworkAccess = async () => {
     isRequestingPermission.value = false;
 
     if (result === 'granted') {
-        permissionHint.value = 'Zugriff erlaubt. Du kannst jetzt „Speichern“ klicken.';
+        permissionHint.value = 'Zugriff erlaubt. Du kannst jetzt „Verbinden“ klicken.';
         return;
     }
 
@@ -156,59 +136,25 @@ const handleRequestNetworkAccess = async () => {
         return;
     }
 
-    permissionHint.value = 'Wähle im Browser-Dialog „Zulassen“, dann erneut „Speichern“ klicken.';
+    permissionHint.value = 'Wähle im Browser-Dialog „Zulassen“, dann erneut „Verbinden“ klicken.';
 };
 
-watch(apiUrl, (value) => {
-    urlInput.value = value;
-});
-
-onUnmounted(() => {
-    if (redirectTimerId.value !== undefined) {
-        clearTimeout(redirectTimerId.value);
-    }
-});
-
-const clearRedirectTimer = () => {
-    if (redirectTimerId.value !== undefined) {
-        clearTimeout(redirectTimerId.value);
-        redirectTimerId.value = undefined;
-    }
-};
-
-const redirectAfterDelay = (message: string) => {
-    successMessage.value = message;
-    isSaving.value = true;
-    redirectTimerId.value = setTimeout(() => navigateTo('/'), 2000);
-};
-
-const saveApiUrl = async (url: string, successMsg: string) => {
-    clearRedirectTimer();
-    successMessage.value = '';
+const handleSubmit = async () => {
     clearApiConnectionError();
     isSaving.value = true;
     isVerifying.value = true;
 
-    setApiUrl(url);
+    apiUrl.value = urlInput.value.trim().replace(/\/+$/, '') || defaultApiUrl;
     const connected = await verifyApiConnection();
     isVerifying.value = false;
 
     if (!connected) {
         isSaving.value = false;
-        await refreshApiQueries();
         return;
     }
 
+    setApiUrl(urlInput.value);
     await refreshApiQueries();
-    redirectAfterDelay(successMsg);
-};
-
-const handleSave = async () => {
-    await saveApiUrl(urlInput.value, 'Einstellungen gespeichert. Du wirst weitergeleitet…');
-};
-
-const handleReset = async () => {
-    urlInput.value = defaultApiUrl;
-    await saveApiUrl(defaultApiUrl, 'Standard-URL wiederhergestellt. Du wirst weitergeleitet…');
+    await navigateTo('/');
 };
 </script>

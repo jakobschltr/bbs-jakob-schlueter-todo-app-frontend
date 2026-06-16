@@ -5,14 +5,14 @@ export type Todolist = {
 
 export const useTodoLists = () => {
     const { fetchFromApi } = useApiFetch();
-    const { apiUrl } = useApiUrl();
+    const { apiUrl, isApiUrlConfigured } = useApiUrl();
     const { setApiConnectionError, clearApiConnectionError } = useApiError();
     const queryCache = useQueryCache();
     const route = useRoute();
 
     const todoListsQuery = useQuery({
         key: () => ['todolists', apiUrl.value],
-        enabled: import.meta.client,
+        enabled: computed(() => import.meta.client && isApiUrlConfigured.value),
         query: async () => fetchFromApi<Todolist[]>('/todo-list'),
     });
 
