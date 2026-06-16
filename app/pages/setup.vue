@@ -127,20 +127,28 @@ const handleRequestNetworkAccess = async () => {
     permissionHint.value = '';
     isRequestingPermission.value = true;
 
-    const result = await requestLocalNetworkAccess(normalizedUrlInput.value);
-    isRequestingPermission.value = false;
+    try {
+        const result = await requestLocalNetworkAccess(normalizedUrlInput.value);
 
-    if (result === 'granted') {
-        permissionHint.value = 'Zugriff erlaubt. Du kannst jetzt „Verbinden“ klicken.';
-        return;
+        if (result === 'granted') {
+            permissionHint.value = 'Zugriff erlaubt. Du kannst jetzt „Verbinden“ klicken.';
+            return;
+        }
+
+        if (result === 'denied') {
+            permissionHint.value = 'Zugriff blockiert. In Chrome: Schloss-Symbol → Website-Einstellungen → Lokales Netzwerk auf „Zulassen“ setzen.';
+            return;
+        }
+
+        if (result === 'unsupported') {
+            permissionHint.value = 'Dein Browser unterstützt die lokale Netzwerk-Berechtigung nicht. Nutze Chrome (aktuell) oder starte die App lokal mit npm run dev.';
+            return;
+        }
+
+        permissionHint.value = 'Wähle im Browser-Dialog „Zulassen“, dann erneut „Verbinden“ klicken.';
+    } finally {
+        isRequestingPermission.value = false;
     }
-
-    if (result === 'denied') {
-        permissionHint.value = 'Zugriff blockiert. In Chrome: Schloss-Symbol → Website-Einstellungen → Lokales Netzwerk auf „Zulassen“ setzen.';
-        return;
-    }
-
-    permissionHint.value = 'Wähle im Browser-Dialog „Zulassen“, dann erneut „Verbinden“ klicken.';
 };
 
 const handleSubmit = async () => {
@@ -148,17 +156,20 @@ const handleSubmit = async () => {
     isSaving.value = true;
     isVerifying.value = true;
 
-    apiUrl.value = urlInput.value.trim().replace(/\/+$/, '') || defaultApiUrl;
-    const connected = await verifyApiConnection();
-    isVerifying.value = false;
+    try {
+        apiUrl.value = urlInput.value.trim().replace(/\/+$/, '') || defaultApiUrl;
+        const connected = await verifyApiConnection();
 
-    if (!connected) {
+        if (!connected) {
+            return;
+        }
+
+        setApiUrl(urlInput.value);
+        await refreshApiQueries();
+        await navigateTo('/');
+    } finally {
+        isVerifying.value = false;
         isSaving.value = false;
-        return;
     }
-
-    setApiUrl(urlInput.value);
-    await refreshApiQueries();
-    await navigateTo('/');
 };
 </script>

@@ -2,8 +2,24 @@ type TargetAddressSpace = 'local' | 'loopback';
 
 export type LocalNetworkPermissionState = 'granted' | 'denied' | 'prompt' | 'unsupported';
 
-const isPrivateIpv4 = (hostname: string) =>
-    /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(hostname);
+const PROBE_TIMEOUT_MS = 5000;
+
+const isPrivateIpv4 = (hostname: string) => {
+    const match = hostname.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+    if (!match) {
+        return false;
+    }
+
+    const octets = match.slice(1, 5).map(Number);
+    if (octets.some((octet) => octet > 255)) {
+        return false;
+    }
+
+    const [first, second] = octets;
+    return first === 10
+        || (first === 172 && second >= 16 && second <= 31)
+        || (first === 192 && second === 168);
+};
 
 export const isLocalNetworkApiUrl = (baseUrl: string) => Boolean(getTargetAddressSpace(baseUrl));
 
@@ -43,6 +59,8 @@ export const queryLocalNetworkPermission = async (
             'loopback-network' as PermissionName,
         ];
 
+    let sawPrompt = false;
+
     for (const name of permissionNames) {
         try {
             const status = await navigator.permissions.query({ name });
@@ -52,12 +70,15 @@ export const queryLocalNetworkPermission = async (
             if (status.state === 'denied') {
                 return 'denied';
             }
+            if (status.state === 'prompt') {
+                sawPrompt = true;
+            }
         } catch {
             continue;
         }
     }
 
-    return 'unsupported';
+    return sawPrompt ? 'prompt' : 'unsupported';
 };
 
 export const requestLocalNetworkAccess = async (baseUrl: string): Promise<LocalNetworkPermissionState> => {
@@ -76,12 +97,16 @@ export const requestLocalNetworkAccess = async (baseUrl: string): Promise<LocalN
     }
 
     const probeUrl = new URL('/todo-list', baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`).href;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), PROBE_TIMEOUT_MS);
 
     try {
-        await fetch(probeUrl, { targetAddressSpace });
+        await fetch(probeUrl, { targetAddressSpace, signal: controller.signal });
         return 'granted';
     } catch {
         const updatedPermission = await queryLocalNetworkPermission(baseUrl);
         return updatedPermission === 'unsupported' ? 'prompt' : updatedPermission;
+    } finally {
+        clearTimeout(timeoutId);
     }
 };

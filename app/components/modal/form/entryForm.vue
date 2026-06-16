@@ -24,7 +24,7 @@
                     v-model="entryDescription"
                     name="entry-description"
                     autocomplete="off"
-                    class="w-full bg-surface-low p-2 text-base rounded-lg min-h-22 h-22 max-h-48"
+                    class="w-full bg-surface-low p-2 text-base rounded-lg min-h-22 max-h-48"
                 />
             </div>  
         </form>

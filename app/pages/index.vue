@@ -49,7 +49,7 @@
                         <div class="flex gap-1 shrink-0">
                             <button
                                 type="button"
-                                class="min-h-11 min-w-11 md:min-h-8 md:min-w-8 md:w-8 md:h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container flex md:hidden md:group-hover:flex items-center justify-center"
+                                class="min-h-11 min-w-11 md:w-8 md:h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container flex md:hidden md:group-hover:flex items-center justify-center"
                                 :aria-label="`Liste ${list.name} löschen`"
                                 @click="deleteTodoList({ listId: list.id })"
                             >

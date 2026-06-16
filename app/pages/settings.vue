@@ -147,20 +147,28 @@ const handleRequestNetworkAccess = async () => {
     permissionHint.value = '';
     isRequestingPermission.value = true;
 
-    const result = await requestLocalNetworkAccess(normalizedUrlInput.value);
-    isRequestingPermission.value = false;
+    try {
+        const result = await requestLocalNetworkAccess(normalizedUrlInput.value);
 
-    if (result === 'granted') {
-        permissionHint.value = 'Zugriff erlaubt. Du kannst jetzt „Speichern“ klicken.';
-        return;
+        if (result === 'granted') {
+            permissionHint.value = 'Zugriff erlaubt. Du kannst jetzt „Speichern“ klicken.';
+            return;
+        }
+
+        if (result === 'denied') {
+            permissionHint.value = 'Zugriff blockiert. In Chrome: Schloss-Symbol → Website-Einstellungen → Lokales Netzwerk auf „Zulassen“ setzen.';
+            return;
+        }
+
+        if (result === 'unsupported') {
+            permissionHint.value = 'Dein Browser unterstützt die lokale Netzwerk-Berechtigung nicht. Nutze Chrome (aktuell) oder starte die App lokal mit npm run dev.';
+            return;
+        }
+
+        permissionHint.value = 'Wähle im Browser-Dialog „Zulassen“, dann erneut „Speichern“ klicken.';
+    } finally {
+        isRequestingPermission.value = false;
     }
-
-    if (result === 'denied') {
-        permissionHint.value = 'Zugriff blockiert. In Chrome: Schloss-Symbol → Website-Einstellungen → Lokales Netzwerk auf „Zulassen“ setzen.';
-        return;
-    }
-
-    permissionHint.value = 'Wähle im Browser-Dialog „Zulassen“, dann erneut „Speichern“ klicken.';
 };
 
 watch(apiUrl, (value) => {

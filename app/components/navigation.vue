@@ -74,11 +74,20 @@ const { openModal } = useModalStore();
 const { todoLists, deleteTodoList } = useTodoLists();
 const { isOpen, close } = useMobileNavigation();
 
-watch(isOpen, (open) => {
-    document.body.style.overflow = open ? 'hidden' : '';
+const applyBodyScrollLock = () => {
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+    document.body.style.overflow = isOpen.value && !isDesktop ? 'hidden' : '';
+};
+
+watch(isOpen, applyBodyScrollLock);
+
+onMounted(() => {
+    applyBodyScrollLock();
+    window.matchMedia('(min-width: 768px)').addEventListener('change', applyBodyScrollLock);
 });
 
 onUnmounted(() => {
+    window.matchMedia('(min-width: 768px)').removeEventListener('change', applyBodyScrollLock);
     document.body.style.overflow = '';
 });
 

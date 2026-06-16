@@ -1,7 +1,7 @@
 <template>
     <div
         v-if="apiConnectionError"
-        class="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-300"
+        class="pt-3 sm:pt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-300"
         role="alert"
     >
         <p>{{ API_CONNECTION_ERROR_MESSAGE }}</p>

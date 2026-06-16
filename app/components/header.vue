@@ -4,7 +4,7 @@
             <button
                 type="button"
                 class="md:hidden shrink-0 min-h-11 min-w-11 flex items-center justify-center rounded-lg hover:bg-primary-container"
-                aria-label="Menü öffnen"
+                :aria-label="isOpen ? 'Menü schließen' : 'Menü öffnen'"
                 @click="toggle"
             >
                 <Icon name="heroicons-solid:bars-3" class="h-6 w-6" aria-hidden="true" />
@@ -57,5 +57,5 @@
 
 <script lang="ts" setup>
 const colorMode = useColorMode();
-const { toggle } = useMobileNavigation();
+const { toggle, isOpen } = useMobileNavigation();
 </script>

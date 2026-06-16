@@ -3,7 +3,7 @@
         <Navigation />
         <div class="w-full min-w-0">
             <Header />
-            <div class="w-full flex justify-center px-3 sm:px-4 pt-3 sm:pt-4">
+            <div class="w-full flex justify-center px-3 sm:px-4">
                 <div class="w-full max-w-2xl">
                     <ApiErrorBanner />
                 </div>

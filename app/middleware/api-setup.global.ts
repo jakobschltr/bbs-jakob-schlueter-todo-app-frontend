@@ -5,8 +5,9 @@ export default defineNuxtRouteMiddleware((to) => {
         return;
     }
 
+    const { isApiUrlConfigured } = useApiUrl();
     const isSetupPage = to.path === '/setup';
-    const configured = hasStoredApiUrl();
+    const configured = hasStoredApiUrl() || isApiUrlConfigured.value;
 
     if (!configured && !isSetupPage) {
         return navigateTo('/setup');
