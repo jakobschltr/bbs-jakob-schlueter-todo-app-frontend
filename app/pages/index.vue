@@ -48,7 +48,9 @@
                         </NuxtLink>
                         <div class="flex gap-1">
                             <button
+                                type="button"
                                 class="w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container hidden group-hover:flex items-center justify-center"
+                                :aria-label="`Liste ${list.name} löschen`"
                                 @click="deleteTodoList({ listId: list.id })"
                             >
                                 <Icon name="heroicons-solid:trash" class="h-1/2 w-1/2" aria-hidden="true" />

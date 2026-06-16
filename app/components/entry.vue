@@ -9,12 +9,15 @@
                 <button
                     class="w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container hidden group-hover:flex items-center justify-center"
                     type="button"
+                    aria-label="Eintrag bearbeiten"
                     @click="openModal('updateEntry', { entryId: entry.id, name: entry.name, description: entry.description })"
                 >
                     <Icon name="heroicons-solid:pencil-square" class="h-3/5 w-3/5" aria-hidden="true" />
                 </button>
                 <button
                     class="w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container hidden group-hover:flex items-center justify-center"
+                    type="button"
+                    aria-label="Eintrag löschen"
                     @click="deleteEntry({ entryId: entry.id })"
                 >
                     <Icon name="heroicons-solid:trash" class="h-1/2 w-1/2" aria-hidden="true" />

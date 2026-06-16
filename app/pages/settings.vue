@@ -19,15 +19,15 @@
                 role="note"
             >
                 <p class="font-medium mb-1">
-                    Zugriff auf lokale Geräte
+                    Lokale Netzwerk-Verbindung
                 </p>
                 <p class="text-amber-800/90 dark:text-amber-200/90">
                     Läuft deine API auf
                     <code class="rounded bg-amber-500/15 px-1">localhost</code>
-                    oder einer lokalen IP (z. B.
-                    <code class="rounded bg-amber-500/15 px-1">192.168.x.x</code>),
-                    muss der Browser der Webseite unter Umständen den Zugriff auf Geräte im lokalen Netzwerk erlauben.
-                    Beim ersten Verbindungsversuch erscheint dafür eine Berechtigungsabfrage — bitte bestätigen.
+                    oder einer lokalen IP, fragt der Browser beim ersten Verbindungsversuch,
+                    ob diese Website auf Geräte in deinem Netzwerk zugreifen darf
+                    (z. B. „Auf andere Apps und Dienste auf diesem Gerät zugreifen“).
+                    Wähle in diesem Dialog <strong>Zulassen</strong>, damit die App dein Backend erreichen kann.
                 </p>
             </div>
 

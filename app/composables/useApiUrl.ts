@@ -22,7 +22,11 @@ export const useApiUrl = () => {
         const normalized = normalizeApiUrl(url) || defaultApiUrl;
         apiUrl.value = normalized;
         if (import.meta.client) {
-            localStorage.setItem(API_URL_STORAGE_KEY, normalized);
+            try {
+                localStorage.setItem(API_URL_STORAGE_KEY, normalized);
+            } catch {
+                // Storage may be blocked or full — URL still applies for this session.
+            }
         }
     };
 

@@ -6,7 +6,7 @@
     >
         <p>{{ API_CONNECTION_ERROR_MESSAGE }}</p>
         <p class="mt-2 text-red-600/90 dark:text-red-300/90">
-            Läuft die API lokal? Prüfe, ob dein Browser der Webseite den Zugriff auf Geräte im lokalen Netzwerk erlaubt.
+            Nutzt du eine lokale API? Erlaube in der Browser-Abfrage den Zugriff auf dein lokales Netzwerk („Zulassen“ wählen).
         </p>
         <NuxtLink
             v-if="!isSettingsPage"

@@ -22,7 +22,9 @@
                     class="hidden group-hover:flex h-full aspect-square w-auto items-center justify-center"
                 >
                     <button
+                        type="button"
                         class="flex h-8 w-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container items-center justify-center"
+                        :aria-label="`Liste ${list.name} löschen`"
                         @click="deleteTodoList({ listId: list.id })"
                     >
                         <Icon name="heroicons-solid:trash" class="h-4 w-4" aria-hidden="true" />

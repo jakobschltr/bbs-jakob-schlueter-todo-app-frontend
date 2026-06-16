@@ -14,6 +14,7 @@
             
             <button
                 type="button"
+                aria-label="Dialog schließen"
                 class="absolute right-4 top-4 w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container flex items-center justify-center"
                 @click="closeModal"
             >
