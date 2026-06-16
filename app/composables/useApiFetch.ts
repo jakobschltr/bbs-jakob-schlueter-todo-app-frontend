@@ -5,16 +5,11 @@ const joinApiUrl = (base: string, path: string) =>
 
 const getFetchOptions = (baseUrl: string, options?: Parameters<typeof $fetch>[1]) => {
     const targetAddressSpace = getTargetAddressSpace(baseUrl);
-    const { headers, ...rest } = options ?? {};
 
     return {
         timeout: DEFAULT_API_REQUEST_TIMEOUT_MS,
         ...(targetAddressSpace ? { targetAddressSpace } : {}),
-        ...rest,
-        headers: {
-            'ngrok-skip-browser-warning': 'true',
-            ...headers,
-        },
+        ...options,
     };
 };
 
