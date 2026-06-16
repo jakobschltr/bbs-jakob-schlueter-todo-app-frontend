@@ -7,7 +7,7 @@
                 </span>
             </div>
 
-            <h2 class="text-lg font-bold mb-8">
+            <h2 class="text-base sm:text-lg font-bold mb-6 sm:mb-8">
                 Willkommen — du hast {{ todoLists.length }}
                 {{ todoLists.length === 1 ? 'Liste' : 'Listen' }} vor dir
             </h2>
@@ -17,7 +17,7 @@
                     id="new-list-name"
                     v-model="newListName"
                     name="new-list-name"
-                    class="w-full p-4 rounded-lg bg-surface-low shadow-sunken"
+                    class="w-full p-4 pr-14 text-base rounded-lg bg-surface-low shadow-sunken"
                     type="text"
                     placeholder="Neue Liste hinzufügen"
                     autocomplete="off"
@@ -46,10 +46,10 @@
                         >
                             {{ list.name }}
                         </NuxtLink>
-                        <div class="flex gap-1">
+                        <div class="flex gap-1 shrink-0">
                             <button
                                 type="button"
-                                class="w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container hidden group-hover:flex items-center justify-center"
+                                class="min-h-11 min-w-11 md:min-h-8 md:min-w-8 md:w-8 md:h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container flex md:hidden md:group-hover:flex items-center justify-center"
                                 :aria-label="`Liste ${list.name} löschen`"
                                 @click="deleteTodoList({ listId: list.id })"
                             >

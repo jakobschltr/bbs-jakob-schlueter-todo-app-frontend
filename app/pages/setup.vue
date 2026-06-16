@@ -47,7 +47,7 @@
                         name="setup-api-url"
                         autocomplete="off"
                         placeholder="http://localhost:5000"
-                        class="w-full bg-surface-low p-4 rounded-lg shadow-sunken"
+                        class="w-full bg-surface-low p-4 text-base rounded-lg shadow-sunken"
                     >
                     <p class="text-2xs text-text-variant">
                         Beispiele: {{ defaultApiUrl }} oder http://192.168.1.50:5000

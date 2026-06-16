@@ -1,14 +1,14 @@
 <template>
     <div
         v-if="isOpen"
-        class="fixed inset-0 z-50 flex justify-center items-center"
+        class="fixed inset-0 z-50 flex justify-center items-end sm:items-center p-3 sm:p-4"
     >
         <button
             type="button"
             class="fixed inset-0 backdrop-blur-sm bg-overlay hover:cursor-pointer"
             @click="closeModal"
         />
-        <div class="p-6 relative bg-background rounded-lg min-w-120 shadow-sunken">
+        <div class="relative z-10 w-full max-w-120 max-h-[min(90dvh,calc(100dvh-env(safe-area-inset-top)-env(safe-area-inset-bottom)-1.5rem))] overflow-y-auto bg-background rounded-lg p-4 sm:p-6 shadow-sunken">
             <h2 class="text-xl font-bold">Liste Erstellen</h2>
             <span class="text-sm text-text-variant">Erstelle eine Liste für deinen Workspace</span>
             
@@ -32,10 +32,10 @@
                 />
             </div>
 
-            <div class="flex justify-end gap-x-2">
+            <div class="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-x-2">
                 <button
                     type="button"
-                    class="btn-secondary w-1/2"
+                    class="btn-secondary w-full sm:w-1/2"
                     @click="closeModal"
                 >
                     Abbrechen
@@ -43,7 +43,7 @@
                 <button
                     type="submit"
                     form="modal-form"
-                    class="btn-primary w-1/2"
+                    class="btn-primary w-full sm:w-1/2"
                 >
                     Speichern
                 </button>

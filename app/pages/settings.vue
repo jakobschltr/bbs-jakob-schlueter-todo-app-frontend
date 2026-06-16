@@ -25,7 +25,7 @@
                     Hostest du dein Backend im Heimnetzwerk — z. B. auf einem
                     <strong>Raspberry Pi</strong> oder <strong>Linux-Server</strong>
                     unter einer lokalen IP wie
-                    <code class="rounded bg-amber-500/15 px-1">192.168.1.50</code>
+                    <code class="rounded bg-amber-500/15 px-1">192.168.24.114</code>
                     — oder auf diesem Rechner unter
                     <code class="rounded bg-amber-500/15 px-1">localhost</code>,
                     fragt Chrome beim ersten Zugriff, ob diese Website auf andere Geräte
@@ -53,7 +53,7 @@
                         name="api-url"
                         autocomplete="off"
                         placeholder="http://localhost:5000"
-                        class="w-full bg-surface-low p-4 rounded-lg shadow-sunken"
+                        class="w-full bg-surface-low p-4 text-base rounded-lg shadow-sunken"
                     >
                     <p class="text-2xs text-text-variant">
                         Standard: {{ defaultApiUrl }} · Beispiel im Netzwerk: http://192.168.1.50:5000

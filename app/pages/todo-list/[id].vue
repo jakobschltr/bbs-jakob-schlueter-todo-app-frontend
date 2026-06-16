@@ -1,20 +1,22 @@
 <template>
     <div class="flex justify-center">
         <div class="w-full max-w-4xl">
-            <div class="mb-4">
-                <span class="text-text-variant text-sm">
+            <div class="mb-4 min-w-0">
+                <span class="text-text-variant text-sm truncate block">
                     <NuxtLink to="/">Listen</NuxtLink> > {{ listName }}
                 </span>
             </div>
 
-            <h2 class="text-lg font-bold mb-8">Du hast heute {{ entries.length }} Aufgaben vor dir</h2>
+            <h2 class="text-base sm:text-lg font-bold mb-6 sm:mb-8">
+                Du hast heute {{ entries.length }} Aufgaben vor dir
+            </h2>
 
             <div class="relative">
                 <input
                     id="new-entry-name"
                     v-model="newEntryName"
                     name="new-entry-name"
-                    class="w-full p-4 rounded-lg bg-surface-low shadow-sunken"
+                    class="w-full p-4 pr-14 text-base rounded-lg bg-surface-low shadow-sunken"
                     type="text"
                     :placeholder="`Eintrag zu '${listName ?? ''}' hinzufügen`"
                 >
