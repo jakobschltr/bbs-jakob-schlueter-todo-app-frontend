@@ -14,7 +14,9 @@
 
             <div class="relative">
                 <input
+                    id="new-list-name"
                     v-model="newListName"
+                    name="new-list-name"
                     class="w-full p-4 rounded-lg bg-surface-low shadow-sunken"
                     type="text"
                     placeholder="Neue Liste hinzufügen"
