@@ -8,36 +8,42 @@
                 "Mach ich morgen"
             </NuxtLink>
         </h1>
-        <button
-            type="button"
-            aria-label="Farbschema umschalten"
-            class="w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container "
-            @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
-        >
-            <ClientOnly>
-                <span
-                    v-if="colorMode.value === 'light'"        
-                    class="block h-full w-full flex items-center justify-center [&_svg]:h-5 [&_svg]:w-5}"
-                    aria-hidden="true"
-                    v-html="lightbulbFullIconSvg"
-                />
-                <span
-                    v-else        
-                    class="block h-full w-full flex items-center justify-center [&_svg]:h-5 [&_svg]:w-5"
-                    aria-hidden="true"
-                    v-html="lightbulbEmptyIconSvg"
-                />
-                <template #fallback>
-                    <span class="block h-full w-full" aria-hidden="true" />
-                </template>
-            </ClientOnly>
-        </button>
+        <div class="flex items-center gap-2">
+            <NuxtLink
+                to="/settings"
+                aria-label="Einstellungen"
+                class="w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container flex items-center justify-center"
+            >
+                <Icon name="heroicons-solid:cog-6-tooth" class="h-5 w-5" aria-hidden="true" />
+            </NuxtLink>
+            <button
+                type="button"
+                aria-label="Farbschema umschalten"
+                class="w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container flex items-center justify-center"
+                @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
+            >
+                <ClientOnly>
+                    <Icon
+                        v-if="colorMode.value === 'light'"
+                        name="heroicons-solid:sun"
+                        class="h-5 w-5"
+                        aria-hidden="true"
+                    />
+                    <Icon
+                        v-else
+                        name="heroicons-solid:moon"
+                        class="h-5 w-5"
+                        aria-hidden="true"
+                    />
+                    <template #fallback>
+                        <span class="block h-5 w-5" aria-hidden="true" />
+                    </template>
+                </ClientOnly>
+            </button>
+        </div>
     </header>
 </template>
 
 <script lang="ts" setup>
-import lightbulbEmptyIconSvg from '~/assets/lightbulb-empty-icon.svg?raw';
-import lightbulbFullIconSvg from '~/assets/lightbulb-filled-icon.svg?raw';
-
 const colorMode = useColorMode();
 </script>

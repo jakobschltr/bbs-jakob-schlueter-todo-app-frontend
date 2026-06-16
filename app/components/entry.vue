@@ -9,23 +9,18 @@
                 <button
                     class="w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container hidden group-hover:flex items-center justify-center"
                     type="button"
+                    aria-label="Eintrag bearbeiten"
                     @click="openModal('updateEntry', { entryId: entry.id, name: entry.name, description: entry.description })"
                 >
-                    <span
-                        class="block h-3/5 w-3/5 flex items-center justify-center [&_svg]:h-full [&_svg]:w-full"
-                        aria-hidden="true"
-                        v-html="editIconSvg"
-                    />
+                    <Icon name="heroicons-solid:pencil-square" class="h-3/5 w-3/5" aria-hidden="true" />
                 </button>
                 <button
                     class="w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container hidden group-hover:flex items-center justify-center"
+                    type="button"
+                    aria-label="Eintrag löschen"
                     @click="deleteEntry({ entryId: entry.id })"
                 >
-                    <span
-                        class="block h-1/2 w-1/2 flex items-center justify-center [&_svg]:h-full [&_svg]:w-full"
-                        aria-hidden="true"
-                        v-html="trashcanIconSvg"
-                    />
+                    <Icon name="heroicons-solid:trash" class="h-1/2 w-1/2" aria-hidden="true" />
                 </button>
             </div>
         </div>
@@ -34,9 +29,6 @@
 </template>
 
 <script lang="ts" setup>
-import editIconSvg from '~/assets/edit-icon.svg?raw';
-import trashcanIconSvg from '~/assets/trashcan-icon.svg?raw';
-
 defineProps<{
   entry: Entry,
 }>();

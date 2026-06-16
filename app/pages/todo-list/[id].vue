@@ -11,13 +11,20 @@
 
             <div class="relative">
                 <input
+                    id="new-entry-name"
                     v-model="newEntryName"
+                    name="new-entry-name"
                     class="w-full p-4 rounded-lg bg-surface-low shadow-sunken"
                     type="text"
                     :placeholder="`Eintrag zu '${listName ?? ''}' hinzufügen`"
                 >
-                <button class="absolute right-2 self-center w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container" @click="handleEntryCreation">
-                    <span class="block h-full w-full flex items-center justify-center [&_svg]:h-5 [&_svg]:w-5" aria-hidden="true" v-html="plusIconSvg" />
+                <button
+                    type="button"
+                    class="absolute right-1.5 top-1/2 -translate-y-1/2 min-h-10 min-w-10 p-2 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container flex items-center justify-center"
+                    aria-label="Eintrag hinzufügen"
+                    @click="handleEntryCreation"
+                >
+                    <Icon name="heroicons-solid:plus" class="h-5 w-5" aria-hidden="true" />
                 </button>
             </div>
 
@@ -30,8 +37,6 @@
 </template>
 
 <script lang="ts" setup>
-import plusIconSvg from '~/assets/plus-icon.svg?raw';
-
 const route = useRoute();
 const { todoLists } = useTodoLists();
 const { entries, exists } = useTodolistEntrysFromRoute();

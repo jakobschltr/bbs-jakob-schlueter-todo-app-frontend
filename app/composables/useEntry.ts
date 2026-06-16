@@ -18,12 +18,14 @@ const normalizeListId = (id: ListIdSource) =>
     });
 
 export const useTodoEntries = (listId?: ListIdSource) => {
-    const baseUrl = 'http://127.0.0.1:5000';
+    const { fetchFromApi } = useApiFetch();
+    const { apiUrl } = useApiUrl();
+    const { setApiConnectionError, clearApiConnectionError } = useApiError();
     const activeListId = normalizeListId(listId);
     const queryCache = useQueryCache();
   
     const entriesQuery = useQuery({
-        key: () => ['todos', activeListId.value ?? ''],
+        key: () => ['todos', activeListId.value ?? '', apiUrl.value],
         enabled: computed(() => import.meta.client && activeListId.value !== undefined),
         query: async () => {
             const id = activeListId.value;
@@ -31,7 +33,7 @@ export const useTodoEntries = (listId?: ListIdSource) => {
                 return { data: [] as Entry[], exists: true as const };
             }
             try {
-                const data = await $fetch<Entry[]>(`${baseUrl}/todo-list/${id}`);
+                const data = await fetchFromApi<Entry[]>(`/todo-list/${id}`);
                 return { data, exists: true as const };
             } catch (error: unknown) {
                 const status =
@@ -46,9 +48,17 @@ export const useTodoEntries = (listId?: ListIdSource) => {
         },
     });
 
+    watch(() => entriesQuery.error.value, (error) => {
+        if (error) {
+            setApiConnectionError(error);
+        } else if (entriesQuery.status.value === 'success') {
+            clearApiConnectionError();
+        }
+    }, { immediate: true });
+
     const createEntryMutation = useMutation({
         mutation: async ({ name, description }: { name: string, description: string }) => {
-            await $fetch(`${baseUrl}/todo-list/${activeListId.value}`, {
+            await fetchFromApi(`/todo-list/${activeListId.value}`, {
                 method: 'POST',
                 body: {
                     name,
@@ -63,7 +73,7 @@ export const useTodoEntries = (listId?: ListIdSource) => {
 
     const deleteEntryMutation = useMutation({
         mutation: async ({ entryId }: { entryId: string }) => {
-            await $fetch(`${baseUrl}/entry/${entryId}`, { method: 'DELETE' });
+            await fetchFromApi(`/entry/${entryId}`, { method: 'DELETE' });
         },
         onSettled: () => {
             if(activeListId.value) queryCache.invalidateQueries({ key: ['todos', activeListId.value] });
@@ -72,7 +82,7 @@ export const useTodoEntries = (listId?: ListIdSource) => {
 
     const editEntryMutation = useMutation({
         mutation: async ({ entryId, name, description }: { entryId: string, name: string, description: string }) => {
-            await $fetch(`${baseUrl}/entry/${entryId}`, {
+            await fetchFromApi(`/entry/${entryId}`, {
                 method: 'PATCH',
                 body: {
                     name,
