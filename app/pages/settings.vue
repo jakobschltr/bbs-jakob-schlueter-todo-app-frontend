@@ -22,13 +22,17 @@
                     Lokale Netzwerk-Verbindung
                 </p>
                 <p class="text-amber-800/90 dark:text-amber-200/90">
-                    Läuft deine API auf
-                    <code class="rounded bg-amber-500/15 px-1">localhost</code>
-                    oder einer lokalen IP, fragt Chrome beim ersten Zugriff,
-                    ob diese Website auf Geräte in deinem Netzwerk zugreifen darf
+                    Hostest du dein Backend im Heimnetzwerk — z. B. auf einem
+                    <strong>Raspberry Pi</strong> oder <strong>Linux-Server</strong>
+                    unter einer lokalen IP wie
+                    <code class="rounded bg-amber-500/15 px-1">192.168.1.50</code>
+                    — oder auf diesem Rechner unter
+                    <code class="rounded bg-amber-500/15 px-1">localhost</code>,
+                    fragt Chrome beim ersten Zugriff, ob diese Website auf andere Geräte
+                    in deinem Netzwerk zugreifen darf
                     (z. B. „Auf andere Apps und Dienste auf diesem Gerät zugreifen“).
-                    Diese Berechtigung kann die App nicht selbst erteilen — klicke unten auf
-                    <strong>Browser-Berechtigung anfordern</strong> und wähle im Dialog
+                    Die App kann das nicht selbst erlauben — klicke unten auf
+                    <strong>Browser-Berechtigung anfordern</strong> und wähle
                     <strong>Zulassen</strong>.
                 </p>
             </div>
@@ -52,7 +56,7 @@
                         class="w-full bg-surface-low p-4 rounded-lg shadow-sunken"
                     >
                     <p class="text-2xs text-text-variant">
-                        Standard: {{ defaultApiUrl }}
+                        Standard: {{ defaultApiUrl }} · Beispiel im Netzwerk: http://192.168.1.50:5000
                     </p>
                 </div>
 
@@ -136,7 +140,7 @@ const normalizedUrlInput = computed(
 );
 
 const needsLocalNetworkAccess = computed(
-    () => Boolean(getTargetAddressSpace(normalizedUrlInput.value)),
+    () => isLocalNetworkApiUrl(normalizedUrlInput.value),
 );
 
 const handleRequestNetworkAccess = async () => {

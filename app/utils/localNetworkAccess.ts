@@ -5,6 +5,8 @@ export type LocalNetworkPermissionState = 'granted' | 'denied' | 'prompt' | 'uns
 const isPrivateIpv4 = (hostname: string) =>
     /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(hostname);
 
+export const isLocalNetworkApiUrl = (baseUrl: string) => Boolean(getTargetAddressSpace(baseUrl));
+
 export const getTargetAddressSpace = (baseUrl: string): TargetAddressSpace | undefined => {
     try {
         const { hostname } = new URL(baseUrl);
@@ -23,23 +25,39 @@ export const getTargetAddressSpace = (baseUrl: string): TargetAddressSpace | und
     return undefined;
 };
 
-export const queryLocalNetworkPermission = async (): Promise<LocalNetworkPermissionState> => {
+const getPermissionName = (targetAddressSpace: TargetAddressSpace) =>
+    (targetAddressSpace === 'loopback' ? 'loopback-network' : 'local-network') as PermissionName;
+
+export const queryLocalNetworkPermission = async (
+    baseUrl?: string,
+): Promise<LocalNetworkPermissionState> => {
     if (!import.meta.client || !('permissions' in navigator)) {
         return 'unsupported';
     }
 
-    try {
-        const status = await navigator.permissions.query({ name: 'local-network' as PermissionName });
-        if (status.state === 'granted') {
-            return 'granted';
+    const targetAddressSpace = baseUrl ? getTargetAddressSpace(baseUrl) : undefined;
+    const permissionNames = targetAddressSpace
+        ? [getPermissionName(targetAddressSpace)]
+        : [
+            'local-network' as PermissionName,
+            'loopback-network' as PermissionName,
+        ];
+
+    for (const name of permissionNames) {
+        try {
+            const status = await navigator.permissions.query({ name });
+            if (status.state === 'granted') {
+                return 'granted';
+            }
+            if (status.state === 'denied') {
+                return 'denied';
+            }
+        } catch {
+            continue;
         }
-        if (status.state === 'denied') {
-            return 'denied';
-        }
-        return 'prompt';
-    } catch {
-        return 'unsupported';
     }
+
+    return 'unsupported';
 };
 
 export const requestLocalNetworkAccess = async (baseUrl: string): Promise<LocalNetworkPermissionState> => {
@@ -52,7 +70,7 @@ export const requestLocalNetworkAccess = async (baseUrl: string): Promise<LocalN
         return 'unsupported';
     }
 
-    const permission = await queryLocalNetworkPermission();
+    const permission = await queryLocalNetworkPermission(baseUrl);
     if (permission === 'granted') {
         return 'granted';
     }
@@ -63,6 +81,7 @@ export const requestLocalNetworkAccess = async (baseUrl: string): Promise<LocalN
         await fetch(probeUrl, { targetAddressSpace });
         return 'granted';
     } catch {
-        return await queryLocalNetworkPermission();
+        const updatedPermission = await queryLocalNetworkPermission(baseUrl);
+        return updatedPermission === 'unsupported' ? 'prompt' : updatedPermission;
     }
 };
