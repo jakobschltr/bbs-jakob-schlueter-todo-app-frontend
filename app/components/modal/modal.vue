@@ -14,14 +14,10 @@
             
             <button
                 type="button"
-                class="absolute right-4 top-4 w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container"
+                class="absolute right-4 top-4 w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container flex items-center justify-center"
                 @click="closeModal"
             >
-                <span
-                    class="block h-full w-full flex items-center justify-center [&_svg]:h-5 [&_svg]:w-5"
-                    aria-hidden="true"
-                    v-html="xMarkIconSvg"
-                />
+                <Icon name="heroicons-solid:x-mark" class="h-5 w-5" aria-hidden="true" />
             </button>
 
             <div>
@@ -56,8 +52,6 @@
 </template>
 
 <script lang="ts" setup>
-import xMarkIconSvg from '~/assets/x-mark-icon.svg?raw';
-
 const store = useModalStore();
 const { isOpen, inputFields, modalProps } = storeToRefs(store);
 const { closeModal } = useModalStore();

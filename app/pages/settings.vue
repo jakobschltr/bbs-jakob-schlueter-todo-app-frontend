@@ -73,11 +73,27 @@
                 </div>
 
                 <div
-                    v-if="successMessage"
+                    v-if="isVerifying"
+                    class="text-sm text-text-variant"
+                    role="status"
+                >
+                    Laden…
+                </div>
+
+                <div
+                    v-else-if="successMessage"
                     class="rounded-lg border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-700 dark:text-green-300"
                     role="status"
                 >
                     {{ successMessage }}
+                </div>
+
+                <div
+                    v-else-if="apiConnectionError"
+                    class="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-300"
+                    role="alert"
+                >
+                    {{ API_CONNECTION_ERROR_MESSAGE }}
                 </div>
             </form>
         </div>
@@ -85,33 +101,65 @@
 </template>
 
 <script lang="ts" setup>
-const { apiUrl, setApiUrl, resetApiUrl, defaultApiUrl } = useApiUrl();
-const queryCache = useQueryCache();
+const { apiUrl, setApiUrl, defaultApiUrl, refreshApiQueries } = useApiUrl();
+const { apiConnectionError, clearApiConnectionError } = useApiError();
 
 const urlInput = ref(apiUrl.value);
 const successMessage = ref('');
 const isSaving = ref(false);
+const isVerifying = ref(false);
+const redirectTimerId = ref<ReturnType<typeof setTimeout>>();
 
 watch(apiUrl, (value) => {
     urlInput.value = value;
 });
 
+onUnmounted(() => {
+    if (redirectTimerId.value !== undefined) {
+        clearTimeout(redirectTimerId.value);
+    }
+});
+
+const clearRedirectTimer = () => {
+    if (redirectTimerId.value !== undefined) {
+        clearTimeout(redirectTimerId.value);
+        redirectTimerId.value = undefined;
+    }
+};
+
 const redirectAfterDelay = (message: string) => {
     successMessage.value = message;
     isSaving.value = true;
-    setTimeout(() => navigateTo('/'), 2000);
+    redirectTimerId.value = setTimeout(() => navigateTo('/'), 2000);
 };
 
-const handleSave = () => {
-    setApiUrl(urlInput.value);
-    queryCache.invalidateQueries();
-    redirectAfterDelay('Einstellungen gespeichert. Du wirst weitergeleitet…');
+const saveApiUrl = async (url: string, successMsg: string) => {
+    clearRedirectTimer();
+    successMessage.value = '';
+    clearApiConnectionError();
+    isSaving.value = true;
+    isVerifying.value = true;
+
+    setApiUrl(url);
+    const connected = await verifyApiConnection();
+    isVerifying.value = false;
+
+    if (!connected) {
+        isSaving.value = false;
+        await refreshApiQueries();
+        return;
+    }
+
+    await refreshApiQueries();
+    redirectAfterDelay(successMsg);
 };
 
-const handleReset = () => {
-    resetApiUrl();
+const handleSave = async () => {
+    await saveApiUrl(urlInput.value, 'Einstellungen gespeichert. Du wirst weitergeleitet…');
+};
+
+const handleReset = async () => {
     urlInput.value = defaultApiUrl;
-    queryCache.invalidateQueries();
-    redirectAfterDelay('Standard-URL wiederhergestellt. Du wirst weitergeleitet…');
+    await saveApiUrl(defaultApiUrl, 'Standard-URL wiederhergestellt. Du wirst weitergeleitet…');
 };
 </script>

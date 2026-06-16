@@ -25,11 +25,7 @@
                         class="flex h-8 w-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container items-center justify-center"
                         @click="deleteTodoList({ listId: list.id })"
                     >
-                        <span
-                            class="block h-full w-full flex items-center justify-center [&_svg]:h-4 [&_svg]:w-4"
-                            aria-hidden="true"
-                            v-html="trashcanIconSvg"
-                        />
+                        <Icon name="heroicons-solid:trash" class="h-4 w-4" aria-hidden="true" />
                     </button>
                 </div>
             </div>
@@ -47,8 +43,6 @@
 </template>
 
 <script lang="ts" setup>
-import trashcanIconSvg from '~/assets/trashcan-icon.svg?raw';
-
 const { openModal } = useModalStore();
 const { todoLists, deleteTodoList } = useTodoLists();
 </script>
