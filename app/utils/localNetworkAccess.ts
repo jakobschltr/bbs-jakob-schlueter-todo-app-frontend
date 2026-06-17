@@ -4,21 +4,33 @@ export type LocalNetworkPermissionState = 'granted' | 'denied' | 'prompt' | 'uns
 
 const PROBE_TIMEOUT_MS = 5000;
 
-const isPrivateIpv4 = (hostname: string) => {
+const parseIpv4Octets = (hostname: string): [number, number, number, number] | null => {
     const match = hostname.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
     if (!match) {
-        return false;
+        return null;
     }
 
-    const octets = match.slice(1, 5).map(Number);
+    const octets = match.slice(1, 5).map(Number) as [number, number, number, number];
     if (octets.some((octet) => octet > 255)) {
+        return null;
+    }
+
+    return octets;
+};
+
+const isPrivateIpv4 = (hostname: string) => {
+    const octets = parseIpv4Octets(hostname);
+    if (!octets) {
         return false;
     }
 
     const [first, second] = octets;
     return first === 10
         || (first === 172 && second >= 16 && second <= 31)
-        || (first === 192 && second === 168);
+        || (first === 192 && second === 168)
+        || first === 127
+        || (first === 100 && second >= 64 && second <= 127)
+        || (first === 169 && second === 254);
 };
 
 export const isLocalNetworkApiUrl = (baseUrl: string) => Boolean(getTargetAddressSpace(baseUrl));
@@ -27,7 +39,12 @@ export const getTargetAddressSpace = (baseUrl: string): TargetAddressSpace | und
     try {
         const { hostname } = new URL(baseUrl);
 
-        if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]') {
+        if (hostname === 'localhost' || hostname === '[::1]') {
+            return 'loopback';
+        }
+
+        const octets = parseIpv4Octets(hostname);
+        if (octets?.[0] === 127) {
             return 'loopback';
         }
 
