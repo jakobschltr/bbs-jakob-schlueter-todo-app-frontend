@@ -8,8 +8,10 @@
     />
 
     <aside
-        class="bg-surface-low flex flex-col min-h-0 z-50 fixed inset-y-0 left-0 w-[min(18rem,85vw)] transform transition-transform duration-200 ease-out md:static md:w-65 md:max-w-none md:translate-x-0 md:flex-none md:h-screen"
-        :class="isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'"
+        class="bg-surface-low flex flex-col min-h-0 z-50 max-md:fixed max-md:inset-y-0 max-md:left-0 max-md:overflow-hidden transform transition-transform duration-200 ease-out md:static md:w-65 md:max-w-none md:translate-x-0 md:flex-none md:h-screen md:overflow-visible"
+        :class="isOpen
+            ? 'max-md:translate-x-0 max-md:w-[min(18rem,85vw)] max-md:pointer-events-auto'
+            : 'max-md:-translate-x-full max-md:w-0 max-md:pointer-events-none md:translate-x-0 md:pointer-events-auto'"
         aria-label="Listen-Navigation"
     >
         <div class="mb-4 flex-none p-4 pb-0 pr-2 flex items-start justify-between gap-2">
