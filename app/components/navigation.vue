@@ -59,7 +59,7 @@
             </div>
         </div>
 
-        <div class="pt-4 flex-none px-4 pr-2 pb-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+        <div class="flex-none p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
             <button
                 class="btn-primary w-full"
                 @click="openModal('creatList')"
