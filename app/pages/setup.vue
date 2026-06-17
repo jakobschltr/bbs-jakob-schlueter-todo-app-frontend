@@ -19,7 +19,7 @@
                     Hostest du dein Backend im Heimnetzwerk — z. B. auf einem
                     <strong>Raspberry Pi</strong> oder <strong>Linux-Server</strong>
                     unter einer lokalen IP wie
-                    <code class="rounded bg-amber-500/15 px-1">192.168.1.50</code>
+                    <code class="rounded bg-amber-500/15 px-1">192.168.24.114</code>
                     — oder auf diesem Rechner unter
                     <code class="rounded bg-amber-500/15 px-1">localhost</code>,
                     fragt Chrome beim ersten Zugriff, ob diese Website auf andere Geräte
@@ -50,7 +50,7 @@
                         class="w-full bg-surface-low p-4 text-base rounded-lg shadow-sunken"
                     >
                     <p class="text-2xs text-text-variant">
-                        Beispiele: {{ defaultApiUrl }} oder http://192.168.1.50:5000
+                        Beispiele: {{ defaultApiUrl }} oder http://192.168.24.114:5000
                     </p>
                 </div>
 

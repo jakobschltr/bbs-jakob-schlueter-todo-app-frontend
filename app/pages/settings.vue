@@ -56,7 +56,7 @@
                         class="w-full bg-surface-low p-4 text-base rounded-lg shadow-sunken"
                     >
                     <p class="text-2xs text-text-variant">
-                        Standard: {{ defaultApiUrl }} · Beispiel im Netzwerk: http://192.168.1.50:5000
+                        Standard: {{ defaultApiUrl }} · Beispiel im Netzwerk: http://192.168.24.114:5000
                     </p>
                 </div>
 
