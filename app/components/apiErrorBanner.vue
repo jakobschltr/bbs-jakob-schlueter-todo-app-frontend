@@ -1,12 +1,13 @@
 <template>
     <div
         v-if="apiConnectionError"
-        class="mx-4 mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-300"
+        class="mt-3 sm:mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-300"
         role="alert"
     >
         <p>{{ API_CONNECTION_ERROR_MESSAGE }}</p>
         <p class="mt-2 text-red-600/90 dark:text-red-300/90">
-            Nutzt du eine lokale API? Erlaube in der Browser-Abfrage den Zugriff auf dein lokales Netzwerk („Zulassen“ wählen).
+            Läuft dein Backend auf einem Gerät im Heimnetzwerk (Raspberry Pi, Linux-Server, lokale IP)?
+            Erlaube in der Chrome-Abfrage den Zugriff auf andere Geräte im Netzwerk („Zulassen“ wählen).
         </p>
         <NuxtLink
             v-if="!isSettingsPage"

@@ -5,9 +5,9 @@
                 <h3 class="font-bold">{{ entry.name }}</h3>
                 <p v-if="entry.description" class="text-sm">{{ entry.description }}</p>
             </div>
-            <div class="flex gap-1">
+            <div class="flex gap-1 shrink-0">
                 <button
-                    class="w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container hidden group-hover:flex items-center justify-center"
+                    class="min-h-11 min-w-11 md:w-8 md:h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container flex md:hidden md:group-hover:flex items-center justify-center"
                     type="button"
                     aria-label="Eintrag bearbeiten"
                     @click="openModal('updateEntry', { entryId: entry.id, name: entry.name, description: entry.description })"
@@ -15,7 +15,7 @@
                     <Icon name="heroicons-solid:pencil-square" class="h-3/5 w-3/5" aria-hidden="true" />
                 </button>
                 <button
-                    class="w-8 h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container hidden group-hover:flex items-center justify-center"
+                    class="min-h-11 min-w-11 md:w-8 md:h-8 hover:shadow-sunken hover:cursor-pointer hover:text-black rounded-lg hover:bg-primary-container flex md:hidden md:group-hover:flex items-center justify-center"
                     type="button"
                     aria-label="Eintrag löschen"
                     @click="deleteEntry({ entryId: entry.id })"

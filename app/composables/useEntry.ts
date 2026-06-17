@@ -19,14 +19,14 @@ const normalizeListId = (id: ListIdSource) =>
 
 export const useTodoEntries = (listId?: ListIdSource) => {
     const { fetchFromApi } = useApiFetch();
-    const { apiUrl } = useApiUrl();
+    const { apiUrl, isApiUrlConfigured } = useApiUrl();
     const { setApiConnectionError, clearApiConnectionError } = useApiError();
     const activeListId = normalizeListId(listId);
     const queryCache = useQueryCache();
   
     const entriesQuery = useQuery({
         key: () => ['todos', activeListId.value ?? '', apiUrl.value],
-        enabled: computed(() => import.meta.client && activeListId.value !== undefined),
+        enabled: computed(() => import.meta.client && isApiUrlConfigured.value && activeListId.value !== undefined),
         query: async () => {
             const id = activeListId.value;
             if (id === undefined) {

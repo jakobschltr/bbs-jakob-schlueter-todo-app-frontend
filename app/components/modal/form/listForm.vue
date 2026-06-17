@@ -13,7 +13,7 @@
                 required
                 name="list-title"
                 autocomplete="off"
-                class="w-full bg-surface-low p-2 rounded-lg"
+                class="w-full bg-surface-low p-2 text-base rounded-lg"
             >
         </form>
     </div>
